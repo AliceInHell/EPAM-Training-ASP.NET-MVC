@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,7 +69,7 @@ namespace JaggedArraySort
         /// <returns>sorted array</returns>
         public int[][] DescendingSortByMaxElement()
         {
-            return SortByMaxElement((a, b) => a < b);
+            return Sort((a, b) => GetMaxValue(a) < GetMaxValue(b));
         }
 
 
@@ -79,7 +79,7 @@ namespace JaggedArraySort
         /// <returns>sorted array</returns>
         public int[][] AscendingSortByMaxElement()
         {
-            return SortByMaxElement((a, b) => a >= b);
+            return Sort((a, b) => GetMaxValue(a) >= GetMaxValue(b));
         }
 
 
@@ -89,7 +89,7 @@ namespace JaggedArraySort
         /// <returns>sorted array</returns>
         public int[][] DescendingSortByMinElement()
         {
-            return SortByMinElement((a, b) => a < b);
+            return Sort((a, b) => GetMinValue(a) < GetMinValue(b));
         }
 
 
@@ -99,7 +99,7 @@ namespace JaggedArraySort
         /// <returns>sorted array</returns>
         public int[][] AscendingSortByMinElement()
         {
-            return SortByMinElement((a, b) => a >= b);
+            return Sort((a, b) => GetMinValue(a) >= GetMinValue(b));
         }
 
 
@@ -109,7 +109,7 @@ namespace JaggedArraySort
         /// <returns>sorted array</returns>
         public int[][] DescendingSortByStringSum()
         {
-            return SortByStringSum((a, b) => a < b);
+            return Sort((a, b) => GetArraySum(a) < GetArraySum(b));
         }
 
 
@@ -119,7 +119,7 @@ namespace JaggedArraySort
         /// <returns>sorted array</returns>
         public int[][] AscendingSortByStringSum()
         {
-            return SortByStringSum((a, b) => a >= b);
+            return Sort((a, b) => GetArraySum(a) >= GetArraySum(b));
         }
 
 
@@ -191,57 +191,13 @@ namespace JaggedArraySort
         /// </summary>
         /// <param name="comparisonCondition">condition(>/<)</param>
         /// <returns></returns>
-        private int[][] SortByStringSum(Func<int, int, bool> comparisonCondition)
+        private int[][] Sort(Func<int[], int[], bool> comparisonCondition)
         {
             for (int i = 0; i < _array.Length; i++)
             {
                 for (int j = 0; j < _array.Length - 1 - i; j++)
                 {
-                    if(comparisonCondition(GetArraySum(_array[j]), GetArraySum(_array[j + 1])))
-                    {
-                        Swap(ref _array[j], ref _array[j + 1]);
-                    }
-                }
-            }
-
-            return _array;
-        }
-
-
-        /// <summary>
-        /// sort jugged array by minStringValue
-        /// </summary>
-        /// <param name="comparisonCondition">condition(>/<)</param>
-        /// <returns></returns>
-        private int[][] SortByMinElement(Func<int, int, bool> comparisonCondition)
-        {
-            for (int i = 0; i < _array.Length; i++)
-            {
-                for (int j = 0; j < _array.Length - 1 - i; j++)
-                {
-                    if (comparisonCondition(GetMinValue(_array[j]), GetMinValue(_array[j + 1])))
-                    {
-                        Swap(ref _array[j], ref _array[j + 1]);
-                    }
-                }
-            }
-
-            return _array;
-        }
-
-
-        /// <summary>
-        /// sort jugged array by maxStringValue
-        /// </summary>
-        /// <param name="comparisonCondition">condition(>/<)</param>
-        /// <returns></returns>
-        private int[][] SortByMaxElement(Func<int, int, bool> comparisonCondition)
-        {
-            for (int i = 0; i < _array.Length; i++)
-            {
-                for (int j = 0; j < _array.Length - 1 - i; j++)
-                {
-                    if (comparisonCondition(GetMaxValue(_array[j]), GetMaxValue(_array[j + 1])))
+                    if(comparisonCondition(_array[j], _array[j + 1]))
                     {
                         Swap(ref _array[j], ref _array[j + 1]);
                     }
