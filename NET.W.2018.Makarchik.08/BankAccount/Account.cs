@@ -44,6 +44,10 @@ namespace BankAccount
             return bonuce;
         }
 
+        /// <summary>
+        /// subtract from bonuce
+        /// </summary>
+        /// <param name="value">value</param>
         public void DebitBnuce(int value)
         {
             if (value != 0 && value <= bonuce)
