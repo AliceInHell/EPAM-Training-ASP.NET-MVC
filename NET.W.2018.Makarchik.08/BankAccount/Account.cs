@@ -33,6 +33,52 @@ namespace BankAccount
             cash = new Dictionary<Currency, ICash>();
         }
 
+        #region Properties
+
+        /// <summary>
+        /// get account bonuce
+        /// </summary>
+        /// <returns>bonuces</returns>
+        public int GetBonuce()
+        {
+            return bonuce;
+        }
+
+        public void DebitBnuce(int value)
+        {
+            if (value != 0 && value <= bonuce)
+            {
+                bonuce -= value;
+            }
+            else
+                throw new ArgumentException();
+        }
+
+        /// <summary>
+        /// get account id
+        /// </summary>
+        /// <returns>id</returns>
+        public int GetId()
+        {
+            if (id == 0 || id.Equals(""))
+                throw new ArgumentException("wrong id");
+
+            return id;
+        }
+
+        /// <summary>
+        /// get account owner's name and surname
+        /// </summary>
+        /// <returns>owner's name</returns>
+        public string GetAccountOwner()
+        {
+            if (name == null || name.Equals("") || surName == null || surName.Equals(""))
+                throw new ArgumentException();
+
+            return name + " " + surName;
+        }
+        #endregion
+
         #region methods for work with cash
 
         /// <summary>
@@ -64,7 +110,10 @@ namespace BankAccount
 
             if (this.cash.ContainsKey(key))
             {
+                double tempAmount = this.cash[key].Amount;
                 this.cash[key] = cash;
+                Replenish(key, tempAmount);
+
                 SaveCash(logFilePath);
             }
             else
@@ -88,15 +137,6 @@ namespace BankAccount
                 throw new ArgumentNullException(string.Format("cash {0} does not exists", key));
         }
 
-        /// <summary>
-        /// get account bonuce
-        /// </summary>
-        /// <returns>bonuces</returns>
-        public int getBonuce()
-        {
-            return bonuce;
-        }
-
         #endregion
 
         #region methods for work with cash amount
@@ -112,8 +152,13 @@ namespace BankAccount
 
             if (cash.ContainsKey(key))
             {
-                bonuce += cash[key].Replenish(value);
-                SaveCash(logFilePath);
+                if (!double.IsInfinity(value) && !double.IsNaN(value) && Math.Abs(value) > 0.01)
+                {
+                    bonuce += cash[key].Replenish(value);
+                    SaveCash(logFilePath);
+                }
+                else
+                    throw new ArgumentException("wrong value");
             }
             else
                 throw new ArgumentNullException(string.Format("cash {0} does not exists", key));
@@ -130,8 +175,13 @@ namespace BankAccount
 
             if (cash.ContainsKey(key))
             {
-                cash[key].Debit(value);
-                SaveCash(logFilePath);
+                if (!double.IsInfinity(value) && !double.IsNaN(value) && Math.Abs(value) > 0.01)
+                {
+                    cash[key].Debit(value);
+                    SaveCash(logFilePath);
+                }
+                else
+                    throw new ArgumentException("wrong value");
             }
             else
                 throw new ArgumentNullException(string.Format("cash {0} does not exists", key));

@@ -28,10 +28,15 @@ namespace BankAccount
         /// <returns>bonuces</returns>
         public int Replenish(double value)
         {
-            double tmp = Amount * AmountCoefficient;
-            Amount += value;
+            if (Amount + value <= 10000000)
+            {
+                double tmp = Amount * AmountCoefficient;
+                Amount += value;
 
-            return (int)(value * ReplenishValueCoefficient + tmp);
+                return (int)(value * ReplenishValueCoefficient + tmp);
+            }
+            else
+                throw new ArgumentException("wrong value");
         }
 
         /// <summary>
