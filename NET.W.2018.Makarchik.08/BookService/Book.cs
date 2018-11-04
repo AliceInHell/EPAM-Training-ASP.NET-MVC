@@ -33,16 +33,38 @@ namespace BookService
             Price = price;
         }
 
-        public override string ToString()
+        /// <summary>
+        /// convert book to string with formatter
+        /// </summary>
+        /// <param name="formatter">formatter</param>
+        /// <returns>book to string</returns>
+        public string ToString(IToStringFormat formatter)
         {
-            return GetType().Name.ToString() + ": " + ISBN + " " + Title + " " + Author + " " +
-                PublishingOffice + " " + PublishingYear + " " + PagesCount + " " + Price;
+            return formatter.ToString(this);
         }
 
+        /// <summary>
+        /// override Object's method
+        /// </summary>
+        /// <returns>book to string</returns>
+        public override string ToString()
+        {
+            return string.Format("{0} record: {1}, {2}, {3}, {4}, {5}, {6}, {7}", GetType().Name,
+                Title, Author, PublishingOffice, PublishingYear, PagesCount, Price);
+        }
+
+        /// <summary>
+        /// overriden Equals method
+        /// </summary>
+        /// <param name="obj">compariht obj</param>
+        /// <returns>true if equals</returns>
         public override bool Equals(object obj)
         {
             if (obj == null)
                 return false;
+
+            if (obj == this)
+                return true;
 
             if (obj.GetType().Equals(GetType()))
             {
