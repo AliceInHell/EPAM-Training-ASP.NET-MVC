@@ -45,6 +45,30 @@ namespace GCD
 
 
         /// <summary>
+        /// calulate GCD using Euclid algorithm
+        /// </summary>
+        /// <param name="time">spent time</param>
+        /// <param name="args">numbers</param>
+        /// <returns></returns>
+        public static int CalculateWithEuclid(out long time, params int[] args)
+        {
+            return CalculateGCD(out time, (a, b) => EuclidAlgorithm(a, b), args);
+        }
+
+
+        /// <summary>
+        /// calulate GCD using Stains algorithm
+        /// </summary>
+        /// <param name="time">spent time</param>
+        /// <param name="args">numbers</param>
+        /// <returns></returns>
+        public static int CalculateWithStain(out long time, params int[] args)
+        {
+            return CalculateGCD(out time, (a, b) => StainAlgorithm(a, b), args);
+        }
+
+
+        /// <summary>
         /// StainAlgotythm 
         /// </summary>
         /// <param name="a">the first number</param>
@@ -87,14 +111,15 @@ namespace GCD
 
 
         /// <summary>
-        /// method which calculate gcd of more than 2 nubmers using EuclidAlgorythm
+        /// method which calculate gcd of more than 2 nubmers given algorithm
         /// </summary>
         /// <param name="time">var to return spent time</param>
+        /// <param name="algorithm">calculating algorithm</param>
         /// <param name="args">input values</param>
         /// <returns>gcd of given nubmers</returns>
         /// <exception cref="ArgumentException">if at least one of given numbers 
         ///     is less then 0 </exception>
-        public static int CalculateWithEuclid(out long time, params int[] args)
+        private static int CalculateGCD(out long time, Func<int, int, int> algorithm, params int[] args)
         {
             if (!isValid(args))
                 throw new ArgumentException();
@@ -104,34 +129,7 @@ namespace GCD
 
             int gcd = EuclidAlgorithm(args[0], args[1]);
             for (int i = 2; i < args.Length && gcd != 1; i++)
-                gcd = EuclidAlgorithm(gcd, args[i]);
-
-            locStopwatch.Stop();
-            time = locStopwatch.ElapsedMilliseconds;
-
-            return gcd;
-        }
-
-
-        /// <summary>
-        /// method which calculate gcd of more than 2 nubmers using StainAlgorythm
-        /// </summary>
-        /// <param name="time">var to return spent time</param>
-        /// <param name="args">input values</param>
-        /// <returns>gcd of given nubmers</returns>
-        /// <exception cref="ArgumentException">if at least one of given numbers 
-        ///     is less then 0 </exception>
-        public static int CalculateWithStain(out long time, params int[] args)
-        {
-            if (!isValid(args))
-                throw new ArgumentException();
-
-            Stopwatch locStopwatch = new Stopwatch();
-            locStopwatch.Start();
-
-            int gcd = StainAlgorithm(args[0], args[1]);
-            for (int i = 2; i < args.Length && gcd != 1; i++)
-                gcd = StainAlgorithm(gcd, args[i]);
+                gcd = algorithm(gcd, args[i]);
 
             locStopwatch.Stop();
             time = locStopwatch.ElapsedMilliseconds;
