@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace DoubleToString
@@ -10,22 +8,57 @@ namespace DoubleToString
     /// </summary>
     public static class DoubleToStringConventor
     {
-        private const int maxExponentOffset = 1023;
-        private const int minExponentOffset = -1022;
-        private const int mantissaLength = 52;
-        private const int exponentLength = 11;
+        /// <summary>
+        /// maximal exponent length
+        /// </summary>
+        private const int MAXEXPONENTOFFSET = 1023;
 
+        /// <summary>
+        /// minimal exponent length
+        /// </summary>
+        private const int MINEXPONENTOFFSET = -1022;
+
+        /// <summary>
+        /// mantissa length
+        /// </summary>
+        private const int MANTISSALENGTH = 52;
+
+        /// <summary>
+        /// exponent length
+        /// </summary>
+        private const int EXPONENTLENGTH = 11;
+
+        /// <summary>
+        /// main calling method 
+        /// </summary>
+        /// <param name="value">given double</param>
+        /// <returns>return binary resultString</returns>
+        public static string ConvertDoubleToString(this double value)
+        {
+            // result sign
+            string sign = GetSign(value);
+            value = Math.Abs(value);
+
+            int offset = GetOffset(ref value);
+
+            // result intPart
+            string binaryIntegerPart = ConvertDecimalToString(offset);
+
+            // result fractionPart
+            string binaryFractionPart = ConvertFractionToString(value - 1).Substring(0, MANTISSALENGTH);
+
+            return $"{sign}{binaryIntegerPart}{binaryFractionPart}";
+        }
 
         /// <summary>
         /// method to check input double
         /// </summary>
         /// <param name="value">given double</param>
         /// <returns>if value is correct, return true</returns>
-        private static bool isCorrect(double value)
+        private static bool IsCorrect(double value)
         {
             return !double.IsNaN(value) && !double.IsInfinity(value);
         }
-
 
         /// <summary>
         /// method to get sign
@@ -38,26 +71,28 @@ namespace DoubleToString
                 "1" : "0";
         }
 
-
         /// <summary>
         /// method to get offset
         /// </summary>
-        /// <param name="intPart">integer given double part</param>
-        /// <param name="fractionPart">fraction part</param>
+        /// <param name="value">given value</param>
         /// <returns>return offset </returns>
         private static int GetOffset(ref double value)
         {
             if (double.IsInfinity(value) || double.IsNaN(value))
+            {
                 return (int)Math.Pow(2, 11) - 1;
+            }
 
             if (value == 0.0)
+            {
                 return 0;
+            }
 
             int offset = 0;
 
-            if(value < 1.0)
+            if (value < 1.0)
             {
-                while(value < 1.0)
+                while (value < 1.0)
                 {
                     value *= 2;
                     offset--;
@@ -72,10 +107,9 @@ namespace DoubleToString
                 }
             }
 
-            offset += maxExponentOffset;
+            offset += MAXEXPONENTOFFSET;
             return offset < 0 ? 0 : offset;
         }
-
 
         /// <summary>
         /// convert decimal to binary string
@@ -102,7 +136,6 @@ namespace DoubleToString
             }
         }
 
-
         /// <summary>
         /// convert fraction to binary string
         /// </summary>
@@ -111,17 +144,23 @@ namespace DoubleToString
         private static string ConvertFractionToString(double value)
         {
             if (value == 0)
-                value = Math.Pow(2, -mantissaLength);
+            {
+                value = Math.Pow(2, -MANTISSALENGTH);
+            }
 
             if (double.IsInfinity(value))
+            {
                 value = 0;
+            }
 
             if (double.IsNaN(value))
+            {
                 value = 0.01;
+            }
 
             StringBuilder result = new StringBuilder();
             int integerOverflow = 0;
-            for (int i = 0; i < mantissaLength + exponentLength; i++)
+            for (int i = 0; i < MANTISSALENGTH + EXPONENTLENGTH; i++)
             {
                 value *= 2;
                 integerOverflow = (int)value % 2;
@@ -130,29 +169,6 @@ namespace DoubleToString
             }
 
             return result.ToString();
-        }
-
-
-        /// <summary>
-        /// main calling method 
-        /// </summary>
-        /// <param name="value">given double</param>
-        /// <returns>return binary resultString</returns>
-        public static string ConvertDoubleToString(this double value)
-        {
-            //result sign
-            string sign = GetSign(value);
-            value = Math.Abs(value);
-
-            int offset = GetOffset(ref value);
-
-            //result intPart
-            string binaryIntegerPart = ConvertDecimalToString(offset);
-
-            //result fractionPart
-            string binaryFractionPart = ConvertFractionToString(value - 1).Substring(0, mantissaLength);
-
-            return $"{sign}{binaryIntegerPart}{binaryFractionPart}";
         }
     }
 }

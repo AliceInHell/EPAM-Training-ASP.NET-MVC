@@ -5,6 +5,9 @@ using System.Text;
 
 namespace BankAccount
 {
+    /// <summary>
+    /// cash interface
+    /// </summary>
     public interface ICash
     {
         double Amount { set; get; }

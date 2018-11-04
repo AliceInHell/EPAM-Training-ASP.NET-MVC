@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BookService.Searchers;
 using System.IO;
+using BookService.Searchers;
 
 namespace BookService
 {
     public class BooksListService
     {
-        #region Fields
+        /// <summary>
+        /// book list constructor
+        /// </summary>
+        public BooksListService()
+        {
+            Books = new List<Book>();
+        }
 
-        public List<Book> books { set; get; }
+        #region Properties
+
+        public List<Book> Books { get; set; }
 
         #endregion
 
@@ -31,9 +37,14 @@ namespace BookService
                 {
                     while (reader.BaseStream.Length != reader.BaseStream.Position)
                     {
-                        books.Add(new Book(reader.ReadString(), reader.ReadString(), reader.ReadString(),
-                            reader.ReadString(), reader.ReadInt16(), reader.ReadInt32(),
-                                reader.ReadInt32()));
+                        Books.Add(new Book(
+                            reader.ReadString(),
+                            reader.ReadString(),
+                            reader.ReadString(),
+                            reader.ReadString(),
+                            reader.ReadInt16(),
+                            reader.ReadInt32(),
+                            reader.ReadInt32()));
                     }
                 }
                 catch (Exception e)
@@ -46,7 +57,9 @@ namespace BookService
                 }
             }
             else
+            {
                 Console.WriteLine("File does not exists");
+            }
         }
 
         /// <summary>
@@ -57,7 +70,7 @@ namespace BookService
         {
             BinaryWriter writer = new BinaryWriter(File.Open(filePath, FileMode.OpenOrCreate));
 
-            foreach(Book b in books)
+            foreach (Book b in Books)
             {
                 writer.Write(b.ISBN);
                 writer.Write(b.Title);
@@ -72,23 +85,19 @@ namespace BookService
         }
 
         /// <summary>
-        /// book list constructor
-        /// </summary>
-        public BooksListService()
-        {
-            books = new List<Book>();
-        }
-
-        /// <summary>
         /// add book to list
         /// </summary>
-        /// <param name="book">nnew book</param>
+        /// <param name="book">new book</param>
         public void AddBook(Book book)
         {
-            if (books.IndexOf(book) >= 0)
+            if (Books.IndexOf(book) >= 0)
+            {
                 throw new Exception("Book list contains this book");
+            }
             else
-                books.Add(book);
+            {
+                Books.Add(book);
+            }
         }
 
         /// <summary>
@@ -97,10 +106,14 @@ namespace BookService
         /// <param name="book">removable book</param>
         public void RemoveBook(Book book)
         {
-            if (books.IndexOf(book) >= 0)
+            if (Books.IndexOf(book) >= 0)
+            {
                 throw new Exception("Book list does not contains this book");
+            }
             else
-                books.Remove(book);
+            {
+                Books.Remove(book);
+            }
         }
 
         /// <summary>
@@ -109,7 +122,7 @@ namespace BookService
         /// <param name="comparator">comparator</param>
         public void SortBooks(IComparer<Book> comparator)
         {
-            books.Sort(comparator);
+            Books.Sort(comparator);
         }
 
         /// <summary>
@@ -122,10 +135,12 @@ namespace BookService
         {
             List<Book> tmp = new List<Book>();
 
-            foreach(Book b in books)
+            foreach (Book b in Books)
             {
                 if (searcher.IsMatch(b, tag))
+                {
                     tmp.Add(b);
+                }
             }
 
             return tmp;

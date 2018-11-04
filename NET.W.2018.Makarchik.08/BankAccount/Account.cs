@@ -1,26 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 
 namespace BankAccount
 {
+    /// <summary>
+    /// class for working with cash
+    /// </summary>
     public class Account
     {
         #region Fields
 
+        /// <summary>
+        /// account id
+        /// </summary>
         private int id;
+
+        /// <summary>
+        /// user's name
+        /// </summary>
         private string name;
+
+        /// <summary>
+        /// user's surname
+        /// </summary>
         private string surName;
-        private int bonuce;
+
+        /// <summary>
+        /// account bonus
+        /// </summary>
+        private int bonus;
+
+        /// <summary>
+        /// path to log file
+        /// </summary>
         private string logFilePath = "./Cash.bin";
+
+        /// <summary>
+        /// account cash
+        /// </summary>
         private Dictionary<Currency, ICash> cash;
 
         #endregion
 
         /// <summary>
-        /// constructor
+        /// Initializes a new instance of the <see cref="Account"/> class
         /// </summary>
         /// <param name="id">account ID</param>
         /// <param name="name">user's name</param>
@@ -33,39 +57,43 @@ namespace BankAccount
             cash = new Dictionary<Currency, ICash>();
         }
 
-        #region Properties
+        #region user access 
 
         /// <summary>
-        /// get account bonuce
+        /// get account bonus
         /// </summary>
-        /// <returns>bonuces</returns>
-        public int GetBonuce()
+        /// <returns>available bonuses</returns>
+        public int GetBonus()
         {
-            return bonuce;
+            return bonus;
         }
 
         /// <summary>
-        /// subtract from bonuce
+        /// subtract from bonus
         /// </summary>
-        /// <param name="value">value</param>
+        /// <param name="value">subtracting value</param>
         public void DebitBnuce(int value)
         {
-            if (value != 0 && value <= bonuce)
+            if (value != 0 && value <= bonus)
             {
-                bonuce -= value;
+                bonus -= value;
             }
             else
+            {
                 throw new ArgumentException();
+            }
         }
 
         /// <summary>
         /// get account id
         /// </summary>
-        /// <returns>id</returns>
+        /// <returns>user's id</returns>
         public int GetId()
         {
-            if (id == 0 || id.Equals(""))
+            if (id == 0 || id.Equals(string.Empty))
+            {
                 throw new ArgumentException("wrong id");
+            }
 
             return id;
         }
@@ -76,8 +104,10 @@ namespace BankAccount
         /// <returns>owner's name</returns>
         public string GetAccountOwner()
         {
-            if (name == null || name.Equals("") || surName == null || surName.Equals(""))
+            if (name == null || name.Equals(string.Empty) || surName == null || surName.Equals(string.Empty))
+            {
                 throw new ArgumentException();
+            }
 
             return name + " " + surName;
         }
@@ -100,7 +130,9 @@ namespace BankAccount
                 SaveCash(logFilePath);
             }
             else
+            {
                 throw new ArgumentException(string.Format("cash {0} already exists", key));
+            }
         }
 
         /// <summary>
@@ -121,7 +153,9 @@ namespace BankAccount
                 SaveCash(logFilePath);
             }
             else
+            {
                 throw new ArgumentNullException(string.Format("cash {0} does not exists", key));
+            }
         }
 
         /// <summary>
@@ -138,7 +172,9 @@ namespace BankAccount
                 SaveCash(logFilePath);
             }
             else
+            {
                 throw new ArgumentNullException(string.Format("cash {0} does not exists", key));
+            }
         }
 
         #endregion
@@ -149,7 +185,7 @@ namespace BankAccount
         /// add sum to cash amount
         /// </summary>
         /// <param name="key">enumerable cash representation</param>
-        /// <param name="value">money</param>
+        /// <param name="value">replenishing money</param>
         public void Replenish(Currency key, double value)
         {
             LoadCash(logFilePath);
@@ -158,24 +194,28 @@ namespace BankAccount
             {
                 if (!double.IsInfinity(value) && !double.IsNaN(value) && Math.Abs(value) > 0.01)
                 {
-                    bonuce += cash[key].Replenish(value);
+                    bonus += cash[key].Replenish(value);
                     SaveCash(logFilePath);
                 }
                 else
+                {
                     throw new ArgumentException("wrong value");
+                }
             }
             else
+            {
                 throw new ArgumentNullException(string.Format("cash {0} does not exists", key));
+            }
         }
 
         /// <summary>
         /// subtract sum from cash amount
         /// </summary>
         /// <param name="key">enumerable cash representation</param>
-        /// <param name="value">money</param>
+        /// <param name="value">subtracting money</param>
         public void Debit(Currency key, double value)
         {
-            LoadCash(logFilePath); 
+            LoadCash(logFilePath);
 
             if (cash.ContainsKey(key))
             {
@@ -185,10 +225,14 @@ namespace BankAccount
                     SaveCash(logFilePath);
                 }
                 else
+                {
                     throw new ArgumentException("wrong value");
+                }
             }
             else
+            {
                 throw new ArgumentNullException(string.Format("cash {0} does not exists", key));
+            }
         }
 
         /// <summary>
@@ -196,7 +240,7 @@ namespace BankAccount
         /// </summary>
         /// <param name="key">enumerable cash representation</param>
         /// <returns>cash amount</returns>
-        public double getAmount(Currency key)
+        public double GetAmount(Currency key)
         {
             LoadCash(logFilePath);
 
@@ -208,7 +252,9 @@ namespace BankAccount
                 return tmp;
             }
             else
+            {
                 throw new ArgumentNullException(string.Format("cash {0} does not exists", key));
+            }
         }
 
         #endregion
@@ -247,14 +293,16 @@ namespace BankAccount
                 }
             }
             else
+            {
                 throw new ArgumentNullException("file does not exists");
+            }
         }
 
         /// <summary>
         /// save cash to file
         /// </summary>
         /// <param name="filePath">path or a new file name</param>
-        public void SaveCash(string filePath)
+        private void SaveCash(string filePath)
         {
             BinaryWriter writer = new BinaryWriter(File.Open(filePath, FileMode.OpenOrCreate));
 
@@ -267,7 +315,7 @@ namespace BankAccount
 
             writer.Close();
 
-            //clear it after saving
+            // clear it after saving
             cash.Clear();
         }
 

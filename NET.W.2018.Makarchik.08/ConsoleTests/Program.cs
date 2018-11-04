@@ -24,12 +24,12 @@ namespace ConsoleTests
 
             newService.SortBooks(new TitleComparator());
 
-            foreach (Book b in newService.books)
+            foreach (Book b in newService.Books)
                 Console.WriteLine(b);
 
             newService.SaveBooks("./Books.bin");
 
-            newService.books.Clear();
+            newService.Books.Clear();
             newService.LoadBooks("./Books.bin");
 
             List<Book> tmp = newService.FindBookByTag(new TitleSearcher(), "anotherTitle");
@@ -43,8 +43,8 @@ namespace ConsoleTests
             myAccount.Replenish(Currency.USD, 10000.0);
             myAccount.Debit(Currency.USD, 50.0);
 
-            Console.WriteLine(myAccount.getAmount(Currency.USD));
-            Console.WriteLine(myAccount.GetBonuce());
+            Console.WriteLine(myAccount.GetAmount(Currency.USD));
+            Console.WriteLine(myAccount.GetBonus());
 
             Console.ReadLine();
         }

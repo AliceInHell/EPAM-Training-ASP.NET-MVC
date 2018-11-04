@@ -7,22 +7,14 @@ namespace BookService
 {
     public class Book
     {
-        #region Properties
-
-        public string ISBN { get; }
-        public string Title { get; }
-        public string Author { get; }
-        public string PublishingOffice { get; }
-        public short PublishingYear { get; }
-        public int PagesCount { get; }
-        public int Price { set; get; }
-
-        #endregion
-
-        #region methods
-
-        public Book(string isbn, string title, string author, string publicsingOffice, 
-            short publishingYear, int pagesCount, int price)
+        public Book(
+            string isbn, 
+            string title, 
+            string author, 
+            string publicsingOffice,
+            short publishingYear, 
+            int pagesCount, 
+            int price)
         {
             ISBN = isbn;
             Title = title;
@@ -32,6 +24,47 @@ namespace BookService
             PagesCount = pagesCount;
             Price = price;
         }
+
+        #region Properties
+
+        /// <summary>
+        /// book isbn
+        /// </summary>
+        public string ISBN { get; }
+
+        /// <summary>
+        /// books title
+        /// </summary>
+        public string Title { get; }
+
+        /// <summary>
+        /// book author
+        /// </summary>
+        public string Author { get; }
+
+        /// <summary>
+        /// book publishing office
+        /// </summary>
+        public string PublishingOffice { get; }
+
+        /// <summary>
+        /// book publishing year
+        /// </summary>
+        public short PublishingYear { get; }
+
+        /// <summary>
+        /// book pages
+        /// </summary>
+        public int PagesCount { get; }
+
+        /// <summary>
+        /// book price
+        /// </summary>
+        public int Price { get; set; }
+
+        #endregion
+
+        #region methods
 
         /// <summary>
         /// convert book to string with formatter
@@ -49,22 +82,33 @@ namespace BookService
         /// <returns>book to string</returns>
         public override string ToString()
         {
-            return string.Format("{0} record: {1}, {2}, {3}, {4}, {5}, {6}, {7}", GetType().Name,
-                Title, Author, PublishingOffice, PublishingYear, PagesCount, Price);
+            return string.Format(
+                "{0} record: {1}, {2}, {3}, {4}, {5}, {6}, {7}", 
+                GetType().Name,
+                Title, 
+                Author, 
+                PublishingOffice, 
+                PublishingYear,              
+                PagesCount, 
+                Price);
         }
 
         /// <summary>
-        /// overriden Equals method
+        /// overridden Equals method
         /// </summary>
-        /// <param name="obj">compariht obj</param>
+        /// <param name="obj">comparing object</param>
         /// <returns>true if equals</returns>
         public override bool Equals(object obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
 
             if (obj == this)
+            {
                 return true;
+            }
 
             if (obj.GetType().Equals(GetType()))
             {
@@ -74,7 +118,9 @@ namespace BookService
                         && tmp.PublishingYear.Equals(PublishingYear) && tmp.Title.Equals(Title);
             }
             else
+            {
                 return false;
+            }
         }
 
         #endregion

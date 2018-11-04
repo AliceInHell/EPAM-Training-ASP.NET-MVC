@@ -8,7 +8,7 @@ namespace BookService
     public static class BookFormatExtension
     {
         /// <summary>
-        /// add smth to book ToString method
+        /// add something to book ToString method
         /// </summary>
         /// <param name="b">context</param>
         /// <returns>book to string</returns>
