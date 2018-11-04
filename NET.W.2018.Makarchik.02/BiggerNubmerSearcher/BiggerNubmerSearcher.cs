@@ -8,6 +8,12 @@ namespace BiggerNubmerSearcher
 {
     public static class BiggerNubmerSearcher
     {
+        /// <summary>
+        /// swap array items
+        /// </summary>
+        /// <param name="array">array</param>
+        /// <param name="i">first element index</param>
+        /// <param name="j">second element index</param>
         private static void Swap(char[] array, int i, int j)
         {
             char tmp;
@@ -16,6 +22,11 @@ namespace BiggerNubmerSearcher
             array[i] = tmp;
         }
 
+        /// <summary>
+        /// bubble sort
+        /// </summary>
+        /// <param name="array">array</param>
+        /// <param name="i">start index</param>
         private static void DecimalSwapAndSort(char[] array, int i)
         {
             Swap(array, i - 1, i);
@@ -28,6 +39,12 @@ namespace BiggerNubmerSearcher
                 }
         }
 
+        /// <summary>
+        /// convert char array to int
+        /// </summary>
+        /// <param name="array">chars</param>
+        /// <param name="i">start index</param>
+        /// <returns></returns>
         private static int GetNewNumber(char[] array, int i)
         {
             char[] tempArray = new char[array.Length];
@@ -44,6 +61,12 @@ namespace BiggerNubmerSearcher
                 return -1;
         }
 
+        /// <summary>
+        /// public method, find next bigger number contains same digits
+        /// </summary>
+        /// <param name="number">current number</param>
+        /// <param name="time">working time</param>
+        /// <returns></returns>
         public static int FindNextBiggerNumber(int number, out long time)
         {
             Stopwatch timer = new Stopwatch();

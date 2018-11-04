@@ -7,6 +7,12 @@ namespace Sorting
 {
     public static class QuickSort
     {
+        /// <summary>
+        /// reccurent part
+        /// </summary>
+        /// <param name="array">corting array</param>
+        /// <param name="left">left edge of the array</param>
+        /// <param name="right">right edge of the array</param>
         private static void _RecPart(int[] array, int left, int right)
         {
             int i, j, temp, border;
@@ -39,6 +45,11 @@ namespace Sorting
                 _RecPart(array, i, right);
         }
 
+        /// <summary>
+        /// public sorting method
+        /// </summary>
+        /// <param name="array">given array</param>
+        /// <returns>sorted array</returns>
         public static int[] Sort(int[] array)
         {
             if (array.Length < 2)

@@ -7,6 +7,13 @@ namespace NthRootSearcher
 {
     public static class RootCalculator
     {
+        /// <summary>
+        /// this method finds root
+        /// </summary>
+        /// <param name="value">given value</param>
+        /// <param name="pow">given power</param>
+        /// <param name="eps">some precision</param>
+        /// <returns>root</returns>
         public static double FindNthRoot(double value, double pow, double eps)
         {
             if (eps > 0)

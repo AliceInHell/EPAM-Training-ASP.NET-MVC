@@ -44,7 +44,7 @@ namespace ConsoleTests
             myAccount.Debit(Currency.USD, 50.0);
 
             Console.WriteLine(myAccount.getAmount(Currency.USD));
-            Console.WriteLine(myAccount.getBonuce());
+            Console.WriteLine(myAccount.GetBonuce());
 
             Console.ReadLine();
         }
