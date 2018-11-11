@@ -104,7 +104,7 @@ namespace Casino
         /// </summary>
         public void Spin()
         {
-            int value = _rand.Next(1, 36);
+            int value = _rand.Next(0, 36);
             Color color = (Color)_rand.Next(0, 2);
             DateTime dateTime = DateTime.Now;
 
