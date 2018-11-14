@@ -2,17 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using BookService.Searchers;
+using NLog;
 
 namespace BookService
 {
     public class BooksListService
     {
         /// <summary>
+        /// Logger from NLog
+        /// </summary>
+        private Logger _logger;
+
+        /// <summary>
         /// book list constructor
         /// </summary>
         public BooksListService()
         {
             Books = new List<Book>();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         #region Properties
@@ -33,6 +40,8 @@ namespace BookService
             {
                 BinaryReader reader = new BinaryReader(File.Open(filePath, FileMode.Open));
 
+                _logger.Trace(string.Format("Reading books from {0}", filePath));
+
                 try
                 {
                     while (reader.BaseStream.Length != reader.BaseStream.Position)
@@ -46,10 +55,12 @@ namespace BookService
                             reader.ReadInt32(),
                             reader.ReadInt32()));
                     }
+
+                    _logger.Info("Have read new book");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Some troubles with file\n" + e.Message);
+                    _logger.Error(e.Message);
                 }
                 finally
                 {
@@ -58,7 +69,7 @@ namespace BookService
             }
             else
             {
-                Console.WriteLine("File does not exists");
+                _logger.Error(string.Format("File {0} does not exists", filePath));
             }
         }
 
@@ -70,6 +81,8 @@ namespace BookService
         {
             BinaryWriter writer = new BinaryWriter(File.Open(filePath, FileMode.OpenOrCreate));
 
+            _logger.Trace(string.Format("Saving books to {0}", filePath));
+
             foreach (Book b in Books)
             {
                 writer.Write(b.ISBN);
@@ -79,6 +92,8 @@ namespace BookService
                 writer.Write(b.PublishingYear);
                 writer.Write(b.PagesCount);
                 writer.Write(b.Price);
+
+                _logger.Info("Another book was written");
             }
 
             writer.Close();
@@ -90,13 +105,17 @@ namespace BookService
         /// <param name="book">new book</param>
         public void AddBook(Book book)
         {
+            _logger.Trace(string.Format("Adding new book to service"));
+
             if (Books.IndexOf(book) >= 0)
             {
+                _logger.Error(string.Format("Book list contains additing book"));
                 throw new Exception("Book list contains this book");
             }
             else
             {
                 Books.Add(book);
+                _logger.Info(string.Format("Book was added"));
             }
         }
 
@@ -106,13 +125,17 @@ namespace BookService
         /// <param name="book">removable book</param>
         public void RemoveBook(Book book)
         {
+            _logger.Trace(string.Format("Removing book from service"));
+
             if (Books.IndexOf(book) >= 0)
             {
+                _logger.Error(string.Format("Book list does not contains removing book"));
                 throw new Exception("Book list does not contains this book");
             }
             else
             {
                 Books.Remove(book);
+                _logger.Info(string.Format("Book was removed"));
             }
         }
 
@@ -122,6 +145,7 @@ namespace BookService
         /// <param name="comparator">comparator</param>
         public void SortBooks(IComparer<Book> comparator)
         {
+            _logger.Trace(string.Format("Sorting books"));
             Books.Sort(comparator);
         }
 
@@ -140,6 +164,7 @@ namespace BookService
                 if (searcher.IsMatch(b, tag))
                 {
                     tmp.Add(b);
+                    _logger.Trace(string.Format("Found some book by tag"));
                 }
             }
 

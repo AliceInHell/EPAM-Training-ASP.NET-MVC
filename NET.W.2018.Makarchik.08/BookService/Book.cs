@@ -83,7 +83,7 @@ namespace BookService
         public override string ToString()
         {
             return string.Format(
-                "{0} record: {1}, {2}, {3}, {4}, {5}, {6}, {7}", 
+                "{0} record: {1}, {2}, {3}, {4}, {5}, {6}", 
                 GetType().Name,
                 Title, 
                 Author, 
