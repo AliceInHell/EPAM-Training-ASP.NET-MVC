@@ -76,8 +76,13 @@ namespace MatrixGenerator
 
         #region Methods
 
-        /*public static Matrix<T> operator +(Matrix<T> firstMatrix, Matrix<T> secondMatrix)
+        /*public static Matrix<T> operator +(Matrix<T> firstMatrix, Matrix<T> secondMatrix) 
         {
+            if (!firstMatrix.GetType().IsValueType && (firstMatrix as IComparable<T>) == null)
+            {
+                throw new InvalidOperationException();
+            }
+
             int order = firstMatrix.Order;
             if (order != secondMatrix.Order)
             {
@@ -89,9 +94,11 @@ namespace MatrixGenerator
             {
                 for (int j = 0; j < order; j++)
                 {
-                    resultMatrix[i, j] = firstMatrix[i, j] + secondMatrix[i, j]; //!!!!!!!!
+                    resultMatrix[i, j] = (dynamic)firstMatrix[i, j] + (dynamic)secondMatrix[i, j];
                 }
             }
+
+            return resultMatrix;
         }*/
 
         /// <summary>

@@ -66,6 +66,30 @@ namespace ConsoleTests
 
             intMatrix[2, 4] = 15;
 
+            // Summ test
+            Matrix<int> first = new Matrix<int>(2);
+            first[0, 0] = 1;
+            first[0, 1] = 2;
+            first[1, 0] = 3;
+            first[1, 1] = 4;
+
+            Matrix<int> second = new Matrix<int>(2);
+            second[0, 0] = 4;
+            second[0, 1] = 3;
+            second[1, 0] = 2;
+            second[1, 1] = 1;
+
+            Matrix<int> result = first + second;
+            
+            for(int i = 0; i < 2; i++)
+            {
+                for(int j = 0; j < 2; j++)
+                {
+                    Console.Write(result[i, j] + "   ");
+                }
+                Console.WriteLine();
+            }
+
             Console.ReadLine();
         }
 
