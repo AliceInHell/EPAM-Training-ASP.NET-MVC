@@ -8,7 +8,7 @@ namespace Queue
     /// Provides simple Queue
     /// </summary>
     /// <typeparam name="T">Queue data type</typeparam>
-    public class Queue<T> : IEnumerable<T>, IEnumerator<T>
+    public class Queue<T> : IEnumerable<T>
     {
         #region Fields
 
@@ -30,12 +30,7 @@ namespace Queue
         /// <summary>
         /// Queue element count
         /// </summary>
-        private int _count;
-
-        /// <summary>
-        /// Inner index
-        /// </summary>
-        private int _index;
+        private int _count;        
 
         /// <summary>
         /// Queue container
@@ -61,29 +56,7 @@ namespace Queue
         /// <summary>
         /// Return queue element count
         /// </summary>
-        public int Count => _count;
-
-        /// <summary>
-        /// Get current element for iterator
-        /// </summary>
-        public T Current
-        {
-            get
-            {
-                return _queue[_index];
-            }
-        }
-
-        /// <summary>
-        /// NotImplemented IEnumerator property
-        /// </summary>
-        object IEnumerator.Current
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public int Count => _count;        
 
         #endregion
 
@@ -141,13 +114,30 @@ namespace Queue
         }
 
         /// <summary>
+        /// Checks if queue contains the element
+        /// </summary>
+        /// <param name="value">Checking value</param>
+        /// <returns>True if contains</returns>
+        public bool Contains(T value)
+        {
+            foreach (T item in this)
+            {
+                if (item.Equals(value))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Get enumerator 
         /// </summary>
         /// <returns>This object will be like enumerator</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            _index = _first - 1;
-            return this;
+            return new CustomEnumerator(_queue, _first, _last);
         }
 
         /// <summary>
@@ -157,38 +147,7 @@ namespace Queue
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Dispose something
-        /// </summary>
-        public void Dispose()
-        {
         }        
-
-        /// <summary>
-        /// Decide can we get next element
-        /// </summary>
-        /// <returns></returns>
-        public bool MoveNext()
-        {
-            if (_index == _last)
-            {
-                Reset();
-                return false;
-            }
-
-            _index++;
-            return true;
-        }
-
-        /// <summary>
-        /// Reset enumerator
-        /// </summary>
-        public void Reset()
-        {
-            _index = _first - 1;
-        }
 
         #endregion
 
@@ -241,9 +200,106 @@ namespace Queue
                     _first = 0;
                 }
             }
-        }          
+        }
 
         #endregion
+
+        #endregion
+
+        #region Iterator
+
+        /// <summary>
+        /// Custom iterator
+        /// </summary>
+        private class CustomEnumerator : IEnumerator<T>
+        {
+            /// <summary>
+            /// Queue container
+            /// </summary>
+            private T[] _queue;
+
+            /// <summary>
+            /// Inner index
+            /// </summary>
+            private int _index;
+
+            /// <summary>
+            /// Queue head
+            /// </summary>
+            private int _first;
+
+            /// <summary>
+            /// Queue tail
+            /// </summary>
+            private int _last;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CustomEnumerator"/> class
+            /// </summary>
+            /// <param name="array">Queue</param>
+            /// <param name="first">First element index</param>
+            /// <param name="last">Last element index</param>
+            public CustomEnumerator(T[] array, int first, int last)
+            {
+                _index = first - 1;
+                _first = first;
+                _last = last;
+                _queue = array;
+            }
+
+            /// <summary>
+            /// Get current element for iterator
+            /// </summary>
+            public T Current
+            {
+                get
+                {
+                    return _queue[_index];
+                }
+            }
+
+            /// <summary>
+            /// NotImplemented IEnumerator property
+            /// </summary>
+            object IEnumerator.Current
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            /// <summary>
+            /// Dispose something
+            /// </summary>
+            public void Dispose()
+            {
+            }
+
+            /// <summary>
+            /// Decide can we get next element
+            /// </summary>
+            /// <returns></returns>
+            public bool MoveNext()
+            {
+                if (_index == _last)
+                {
+                    Reset();
+                    return false;
+                }
+
+                _index++;
+                return true;
+            }
+
+            /// <summary>
+            /// Reset enumerator
+            /// </summary>
+            public void Reset()
+            {
+                _index = _first - 1;
+            }
+        }
 
         #endregion
     }

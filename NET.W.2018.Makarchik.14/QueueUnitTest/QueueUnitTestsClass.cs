@@ -46,6 +46,13 @@ namespace QueueUnitTest
         }
 
         [TestMethod]
+        public void QueueContainsMethodTest()
+        {
+            _queue.Pop();
+            Assert.IsFalse(_queue.Contains(0));
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void InvalidOperationExceptionTest()
         {
