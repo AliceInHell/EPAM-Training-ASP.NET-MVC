@@ -39,7 +39,7 @@ namespace ConsoleTests
             // BankAccount demonstration
 
             Account myAccount = new Account(12345, "Vadim", "Makarchik");
-            myAccount.AddCash(Currency.USD, new GoldCash());
+            myAccount.AddCash(Currency.USD, new GoldCash(new BonusCalculator(0.05, 0.03)));
             myAccount.Replenish(Currency.USD, 10000.0);
             myAccount.Debit(Currency.USD, 50.0);
 

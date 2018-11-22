@@ -10,9 +10,8 @@ namespace BankAccount
     /// </summary>
     public interface ICash
     {
-        double Amount { set; get; }
-        double AmountCoefficient { get; }
-        double ReplenishValueCoefficient { get; }
+        double Amount { set; get; }        
+        IBonusCalculator BonusesCalculator { get; }
         int Replenish(double value);
         void Debit(double value);
     }

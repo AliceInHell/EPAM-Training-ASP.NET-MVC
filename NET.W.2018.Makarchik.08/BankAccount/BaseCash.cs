@@ -10,27 +10,21 @@ namespace BankAccount
         /// <summary>
         /// constructor, coefficient initialization
         /// </summary>
-        public BaseCash()
+        public BaseCash(IBonusCalculator calculator)
         {
-            Amount = 0.0;
-            AmountCoefficient = 0.0;
-            ReplenishValueCoefficient = 0.0;
+            BonusesCalculator = calculator;
+            Amount = 0.0;            
         }
 
         /// <summary>
         /// amount of money
         /// </summary>
-        public double Amount { get; set; }
+        public double Amount { get; set; }        
 
         /// <summary>
-        /// coefficient for calculating bonuses
+        /// Bonuses calculator
         /// </summary>
-        public double AmountCoefficient { get; set; }
-
-        /// <summary>
-        /// coefficient for calculating bonus
-        /// </summary>
-        public double ReplenishValueCoefficient { get; set; }
+        public IBonusCalculator BonusesCalculator { get; }
 
         /// <summary>
         /// add amount to amount
@@ -41,10 +35,10 @@ namespace BankAccount
         {
             if (Amount + value <= 10000000)
             {
-                double tmp = Amount * AmountCoefficient;
+                double tmpAmount = Amount;       
                 Amount += value;
 
-                return (int)((value * ReplenishValueCoefficient) + tmp);
+                return BonusesCalculator.CalculateBonuses(value, tmpAmount);
             }
             else
             {
