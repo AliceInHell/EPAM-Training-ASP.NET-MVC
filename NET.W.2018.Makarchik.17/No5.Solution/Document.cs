@@ -40,7 +40,7 @@ namespace No5.Solution
                 case ConvertType.ToLaTeX:
                     foreach (dynamic part in parts)
                     {
-                        output += ToLaTeXConverter  .ToLaTeX(part);
+                        output += ToLaTeXConverter.ToLaTeX(part);
                     }
                     break;
                 default:
