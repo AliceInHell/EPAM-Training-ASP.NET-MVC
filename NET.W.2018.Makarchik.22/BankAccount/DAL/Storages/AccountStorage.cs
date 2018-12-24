@@ -69,7 +69,7 @@ namespace BankAccount.DAL.Account
 
             foreach (Account acc in accounts)
             {
-                if (acc.GetId() == id)
+                if (acc.Id == id)
                 {
                     return acc;
                 }
@@ -165,7 +165,7 @@ namespace BankAccount.DAL.Account
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (oldAcc.GetId() == list[i].GetId())
+                    if (oldAcc.Id == list[i].Id)
                     {
                         list.Remove(list[i]);
                         i--;

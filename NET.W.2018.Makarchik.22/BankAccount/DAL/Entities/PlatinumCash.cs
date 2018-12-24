@@ -26,7 +26,7 @@ namespace BankAccount.DAL.Account
         /// <summary>
         /// Cash id
         /// </summary>
-        public string Id { get; set; }
+        public string Id { get; }
 
         /// <summary>
         /// Bonuses calculator

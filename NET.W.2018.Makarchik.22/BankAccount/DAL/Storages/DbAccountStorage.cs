@@ -33,15 +33,15 @@ namespace BankAccount.DAL.Storages
         {
             using (AccountsStorageContext context = new AccountsStorageContext())
             {
-                PersonInfo pi = new PersonInfo(account.GetId(), account.GetName(), account.GetSurname(), account.GetBonus());
+                PersonInfo pi = new PersonInfo(account.Id, account.Name, account.SurName, account.Mail, account.Bonus);
                 context.Persons.Add(pi);
 
-                foreach (var cashInfo in account.GetCahes())
+                foreach (var cashInfo in account.Cash)
                 {
                     CashInfo ci = new CashInfo(cashInfo.Value.Id, cashInfo.Value.Amount, (int)cashInfo.Key, (int)cashInfo.Value.GetCashType());
                     context.Cashes.Add(ci);
 
-                    PersonToCashLink link = new PersonToCashLink(account.GetId(), cashInfo.Value.Id, GenerateLinkId());
+                    PersonToCashLink link = new PersonToCashLink(account.Id, cashInfo.Value.Id, GenerateLinkId());
                     context.Links.Add(link);
                 }
 
@@ -62,7 +62,7 @@ namespace BankAccount.DAL.Storages
 
                 if (pi != null)
                 {
-                    Account.Account foundedAccount = new Account.Account(pi.Id, pi.Name, pi.SurName, pi.Bonus);
+                    Account.Account foundedAccount = new Account.Account(pi.Id, pi.Name, pi.SurName, pi.Mail, pi.Bonus);
 
                     List<PersonToCashLink> links = context.Links.Where(link => link.PersonId == pi.Id).ToList();
                     foreach (PersonToCashLink link in links)
@@ -106,7 +106,7 @@ namespace BankAccount.DAL.Storages
         {
             using (AccountsStorageContext context = new AccountsStorageContext())
             {
-                string accountId = account.GetId();
+                string accountId = account.Id;
                 PersonInfo pi = context.Persons.SingleOrDefault(person => person.Id == accountId);
 
                 if (pi != null)

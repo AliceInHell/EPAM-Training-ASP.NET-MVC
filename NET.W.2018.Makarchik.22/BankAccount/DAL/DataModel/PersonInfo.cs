@@ -22,11 +22,12 @@ namespace BankAccount.DAL.DataModel
         /// <param name="id">account ID</param>
         /// <param name="name">user's name</param>
         /// <param name="surName">user's surname</param>
-        public PersonInfo(string id, string name, string surName, int bonus)
+        public PersonInfo(string id, string name, string surName, string mail, int bonus)
         {
             Id = id;
             Name = name;
             SurName = surName;
+            Mail = mail;
             Bonus = bonus;         
         }
 
@@ -44,6 +45,11 @@ namespace BankAccount.DAL.DataModel
         /// user's surname
         /// </summary>
         public string SurName { get; set; }
+
+        /// <summary>
+        /// User mail
+        /// </summary>
+        public string Mail { get; set; }
 
         /// <summary>
         /// account bonus

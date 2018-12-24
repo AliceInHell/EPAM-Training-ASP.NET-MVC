@@ -11,8 +11,8 @@ namespace BankAccount.DAL.Interfaces
     /// </summary>
     public interface ICash
     {
-        string Id { get; set; }
-        double Amount { set; get; }        
+        string Id { get; }
+        double Amount { get; set; }        
         IBonusCalculator BonusesCalculator { get; }
         int Replenish(double value);
         void Debit(double value);

@@ -15,9 +15,9 @@ namespace ConsoleTests
             // Bank newBank = new Bank(accountStorage, idGenerator);
 
             DbAccountStorage storage = new DbAccountStorage();
-            Bank newBank = new Bank(storage, idGenerator);
+            Bank newBank = new Bank(storage, idGenerator, "mail", "password");
                
-            string myId = newBank.CreateNewAccount("Vadim", "Makarchik");
+            string myId = newBank.CreateNewAccount("Vadim", "Makarchik", "someMail");
             newBank.AddCash(myId, Currency.USD, new GoldCash(new BonusCalculator(0.05, 0.03), idGenerator.Generate()));
             newBank.Replenish(myId, Currency.USD, 10000.0);
             newBank.Deposit(myId, Currency.USD, 50.0);
