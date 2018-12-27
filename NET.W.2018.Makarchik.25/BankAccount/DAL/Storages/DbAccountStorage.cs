@@ -169,5 +169,17 @@ namespace BankAccount.DAL.Storages
 
             return result;
         }
+
+        /// <summary>
+        /// Get all persons
+        /// </summary>
+        /// <returns>Persons info</returns>
+        public IEnumerable<PersonInfo> GetPersons()
+        {
+            using (AccountsStorageContext context = new AccountsStorageContext())
+            {
+                return context.Persons;
+            }
+        }
     }
 }

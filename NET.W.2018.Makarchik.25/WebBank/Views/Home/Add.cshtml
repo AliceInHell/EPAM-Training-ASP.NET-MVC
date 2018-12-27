@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Add</h2>
+
+@using (Html.BeginForm("Add", "Home", FormMethod.Post))
+{
+    <div>
+        <div>
+            <p>
+                Enter id <br />
+            </p>
+            @Html.TextBox("id")
+        </div>
+        <div>
+            <p>
+                Choose currency: <br />
+            </p>
+            <p>
+                USD @Html.RadioButton("currency", 0, true)
+            </p>
+            <p>
+                EUR @Html.RadioButton("currency", 1)
+            </p>
+            <p>
+                RUB @Html.RadioButton("currency", 2)
+            </p>
+            <p>
+                BYN @Html.RadioButton("currency", 3)
+            </p>
+        </div>
+        <div>
+            <p>
+                Choose cash type: <br />
+            </p>
+            <p>
+                BaseCash @Html.RadioButton("cashType", 0, true)
+            </p>
+            <p>
+                GoldCash @Html.RadioButton("cashType", 1)
+            </p>
+            <p>
+                PlatinumCash @Html.RadioButton("cashType", 2)
+            </p>
+        </div>
+        <div>
+            <input type="submit" value="Add" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+@if (TempData["Alert"] != null && TempData["Alert"].Equals("Error"))
+{
+    <h4 class="errorOutput">@TempData["AllertMessage"]</h4>
+}

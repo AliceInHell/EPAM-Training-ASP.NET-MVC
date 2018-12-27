@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Close";
+}
+
+<h2>Close</h2>
+
+@using (Html.BeginForm("Close", "Home", FormMethod.Post))
+{
+    <div>
+        <div>
+            <p>
+                Enter Id <br />
+            </p>
+            @Html.TextBox("id")
+        </div>
+        <div>
+            <input type="submit" value="Close" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+@if (TempData["Alert"] != null && TempData["Alert"].Equals("Error"))
+{
+    <h4 class="errorOutput">@TempData["AllertMessage"]</h4>
+}

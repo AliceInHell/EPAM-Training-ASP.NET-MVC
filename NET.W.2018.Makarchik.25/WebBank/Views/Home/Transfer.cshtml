@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Transfer";
+}
+
+<h2>Transfer</h2>
+
+@using (Html.BeginForm("Transfer", "Home", FormMethod.Post))
+{
+    <div>
+        <div>
+            <p>
+                Enter your id <br />
+            </p>
+            @Html.TextBox("sourceId")
+            <p>
+                Enter destination id <br />
+            </p>
+            @Html.TextBox("destinationId")
+        </div>
+        <div>
+            <p>
+                Choose source currency: <br />
+            </p>
+            <p>
+                USD @Html.RadioButton("sourceCurrency", 0, true)
+            </p>
+            <p>
+                EUR @Html.RadioButton("sourceCurrency", 1)
+            </p>
+            <p>
+                RUB @Html.RadioButton("sourceCurrency", 2)
+            </p>
+            <p>
+                BYN @Html.RadioButton("sourceCurrency", 3)
+            </p>
+        </div>
+        <div>
+            <p>
+                Choose destination currency: <br />
+            </p>
+            <p>
+                USD @Html.RadioButton("destinationCurrency", 0, true)
+            </p>
+            <p>
+                EUR @Html.RadioButton("destinationCurrency", 1)
+            </p>
+            <p>
+                RUB @Html.RadioButton("destinationCurrency", 2)
+            </p>
+            <p>
+                BYN @Html.RadioButton("destinationCurrency", 3)
+            </p>
+        </div>
+        <div>
+            <p>
+                Enter amount <br />
+            </p>
+            @Html.TextBox("amount", "", new { @type = "numer" })
+        </div>
+        <div>
+            <input type="submit" value="Transfer" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+@if (TempData["Alert"] != null && TempData["Alert"].Equals("Error"))
+{
+    <h4 class="errorOutput">@TempData["AllertMessage"]</h4>
+}

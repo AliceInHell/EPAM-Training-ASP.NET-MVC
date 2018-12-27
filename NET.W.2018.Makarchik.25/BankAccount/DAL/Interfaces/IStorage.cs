@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BankAccount.DAL.DataModel;
 
 namespace BankAccount.DAL.Interfaces
 {
@@ -13,5 +14,6 @@ namespace BankAccount.DAL.Interfaces
         void SaveAccounts(string fileName);
         void LoadAccounts(string fileName);
         void UpdateAccount(Account.Account account);
+        IEnumerable<PersonInfo> GetPersons();        
     }
 }

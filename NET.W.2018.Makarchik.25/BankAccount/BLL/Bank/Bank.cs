@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using BankAccount.BLL.Interfaces;
 using BankAccount.DAL.Account;
 using BankAccount.DAL.Interfaces;
+using BankAccount.DAL.DataModel;
 
 namespace BankAccount.BLL.Bank
 {
@@ -91,15 +93,38 @@ namespace BankAccount.BLL.Bank
         /// <param name="id">Account ud</param>
         /// <param name="currency">New cash currency</param>
         /// <param name="cash">Cash type</param>
-        public void AddCash(string id, Currency currency, ICash cash)
+        public void AddCash(string id, Currency currency, CashType cashType)
         {
             Account tmp = _storage.GetAccountById(id);
-            if (tmp.AddCash(currency, cash))
+            switch (cashType)
             {
-                _storage.UpdateAccount(tmp);
+                case CashType.BaseCash:
+                    if (tmp.AddCash(currency, new BaseCash(new BonusCalculator(0.03, 0.03), _idGenerator.Generate())))
+                    {
+                        _storage.UpdateAccount(tmp);
 
-                Notify(tmp, string.Format("You have successfully added new {0} cash", currency));
-            }            
+                        Notify(tmp, string.Format("You have successfully added new {0} cash", currency));
+                    }
+                    break;
+                case CashType.GoldCash:
+                    if (tmp.AddCash(currency, new GoldCash(new BonusCalculator(0.04, 0.04), _idGenerator.Generate())))
+                    {
+                        _storage.UpdateAccount(tmp);
+
+                        Notify(tmp, string.Format("You have successfully added new {0} cash", currency));
+                    }
+                    break;
+                case CashType.PlatinumCash:
+                    if (tmp.AddCash(currency, new PlatinumCash(new BonusCalculator(0.05, 0.05), _idGenerator.Generate())))
+                    {
+                        _storage.UpdateAccount(tmp);
+
+                        Notify(tmp, string.Format("You have successfully added new {0} cash", currency));
+                    }
+                    break;
+            }
+
+            _storage.UpdateAccount(tmp);
         }
 
         /// <summary>
@@ -197,6 +222,24 @@ namespace BankAccount.BLL.Bank
             }            
         }
 
+        /// <summary>
+        /// Return all persons
+        /// </summary>
+        /// <returns>Persons</returns>
+        public IEnumerable<PersonInfo> GetPersons()
+        {
+            return _storage.GetPersons();
+        }
+
+        /// <summary>
+        /// Close an account
+        /// </summary>
+        /// <param name="id">Account id</param>
+        public void CloseAccount(string id)
+        {
+            _storage.Remove(id);
+        }
+
         #endregion        
 
         #region Save storage to the disk
@@ -264,7 +307,7 @@ namespace BankAccount.BLL.Bank
             {
                 // empty
             }
-        }
+        }        
 
         #endregion
     }

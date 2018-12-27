@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "Withdraw";
+}
+
+<h2>Withdraw</h2>
+
+@using (Html.BeginForm("Withdraw", "Home", FormMethod.Post))
+{
+    <div>
+        <div>
+            <p>
+                Enter cash id <br />
+            </p>
+            @Html.TextBox("id")
+        </div>
+        <div>
+            <p>
+                Choose currency: <br />
+            </p>
+            <p>
+                USD @Html.RadioButton("currency", 0, true)
+            </p>
+            <p>
+                EUR @Html.RadioButton("currency", 1)
+            </p>
+            <p>
+                RUB @Html.RadioButton("currency", 2)
+            </p>
+            <p>
+                BYN @Html.RadioButton("currency", 3)
+            </p>
+        </div>
+        <div>
+            <p>
+                Enter amount
+            </p>
+            @Html.TextBox("amount", "", new { @type = "number" })
+        </div>
+        <div>
+            <input type="submit" value="Withdraw" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+@if (TempData["Alert"] != null && TempData["Alert"].Equals("Error"))
+{
+    <h4 class="errorOutput">@TempData["AllertMessage"]</h4>
+}

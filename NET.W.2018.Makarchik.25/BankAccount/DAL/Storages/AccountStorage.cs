@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using BankAccount.DAL.DataModel;
 using BankAccount.DAL.Interfaces;
 
 namespace BankAccount.DAL.Account
@@ -175,6 +176,11 @@ namespace BankAccount.DAL.Account
         }
 
         public void UpdateAccount(Account account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<PersonInfo> GetPersons()
         {
             throw new NotImplementedException();
         }
